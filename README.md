@@ -1,80 +1,29 @@
-# RBC Demand Forecasting using ARIMA and SARIMA
+# RBC Demand Forecasting (ARIMA vs SARIMA)
 
-> Healthcare Time-Series Forecasting | ARIMA | SARIMA | Statistical Modeling | Out-of-Sample Validation
+This repository contains a small, reproducible time-series forecasting project for monthly Red Blood Cell (RBC) demand.
 
-This project focuses on forecasting monthly Red Blood Cell (RBC) demand using classical time-series modeling techniques. The study was developed within a graduate-level Revenue and Demand Management context, with application to healthcare demand forecasting.
+## What this project does
+- Uses an **80/20 time-ordered split** (first 80% for training, last 20% for testing)
+- Estimates ARIMA and SARIMA parameters via **AIC-based order selection** (`auto_arima`)
+- Fits the selected models and forecasts the test horizon
+- Compares performance using **RMSE** and **MAPE**
+- Plots ARIMA vs SARIMA forecasts against the real demand
 
-The objective is to model and compare non-seasonal ARIMA and seasonal SARIMA approaches under a structured statistical framework, emphasizing model selection, parameter estimation, and out-of-sample performance evaluation.
+## Files
+- `main.py` runs the full pipeline
+- `model.py` contains:
+  - `estimate_parameters()` for AIC-based order selection (ARIMA and SARIMA)
+  - fit + forecast functions
+- `utils.py` contains data loading, splitting, and metrics
+- `plotting.py` draws a comparison plot
+- `rbc_data.csv` is a sample dataset in the expected format
 
----
-
-## Project Overview
-
-Healthcare demand forecasting requires models capable of capturing both trend and seasonal structures. Monthly RBC consumption data exhibit clear temporal dynamics and potential annual seasonality. 
-
-This project implements a reproducible forecasting pipeline including:
-
-- Time-ordered 80/20 train-test split
-- AIC-based parameter estimation
-- ARIMA modeling for non-seasonal structure
-- SARIMA modeling for seasonal (m=12) structure
-- Quantitative performance comparison on unseen data
-
-The implementation follows a modular design with separate components for parameter estimation, model fitting, forecasting, and evaluation.
-
----
-
-## Objective
-
-- Forecast monthly RBC demand
-- Compare ARIMA vs SARIMA performance
-- Evaluate predictive accuracy using out-of-sample validation
-- Investigate the impact of seasonal structure on forecasting quality
-
----
-
-## Methodology
-
-### Data Preparation
-- Monthly time-series data (2014–2018)
-- Chronological 80% training / 20% testing split
-
-### Model Selection
-- Stationarity induced via differencing (d parameter)
-- Order selection using Akaike Information Criterion (AIC)
-- Automated parameter estimation using `auto_arima`
-- Seasonal period set to m = 12 for SARIMA
-
-### Model Evaluation
-Performance is evaluated on the test set using:
-
-- Root Mean Squared Error (RMSE)
-- Mean Absolute Percentage Error (MAPE)
-
-This out-of-sample validation ensures that the models are assessed based on generalization performance rather than in-sample fit.
-
----
-
-## Key Insight
-
-Results show that incorporating seasonal components via SARIMA improves the model’s ability to capture intra-year fluctuations compared to a purely non-seasonal ARIMA model. The comparison highlights the importance of structural modeling in healthcare time-series forecasting.
-
----
-
-## Technical Stack
-
-- Python
-- pandas
-- statsmodels
-- pmdarima
-- matplotlib
-
----
-
-## Reproducibility
-
-The project is fully reproducible. All scripts are modular and executable via:
-
+## Run
 ```bash
 pip install -r requirements.txt
 python main.py
+```
+
+## Notes
+- SARIMA uses seasonal period **m=12** (monthly seasonality).
+- You can replace `rbc_data.csv` with your own data (same column names).
